@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação - HelpBank</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+       <header class="header">
+            <img 
+                src="{{ url_for('static', filename='image/logo-helpbank.jpeg') }}" 
+                alt="Help Bank"
+                class="logo-helpbank"
+            >
+        </header>
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="form-wrapper">
+                <div class="form-header">
+                    <h1 data-testid="page-title">Faça sua Simulação</h1>
+                    <p class="subtitle">Preencha seus dados e encontre a melhor solução financeira para você</p>
+                </div>
+
+                <!-- Mensagem de Sucesso -->
+                <div id="success-message" class="success-message" style="display: none;" data-testid="success-message">
+                    <div class="success-icon">✓</div>
+                    <h3>Dados enviados com sucesso!</h3>
+                    <p>Em instantes você será redirecionado para o WhatsApp.</p>
+                    <button id="whatsapp-btn" class="whatsapp-btn" data-testid="whatsapp-redirect-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="currentColor"/>
+                        </svg>
+                        Continuar no WhatsApp
+                    </button>
+                </div>
+
+                <!-- Formulário -->
+                <form id="lead-form" class="lead-form" data-testid="lead-form">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="nome" data-testid="nome-label">Nome Completo *</label>
+                            <input 
+                                type="text" 
+                                id="nome" 
+                                name="nome" 
+                                data-testid="nome-input"
+                                placeholder="Digite seu nome completo"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cpf" data-testid="cpf-label">CPF *</label>
+                            <input 
+                                type="text" 
+                                id="cpf" 
+                                name="cpf" 
+                                data-testid="cpf-input"
+                                placeholder="000.000.000-00"
+                                maxlength="14"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="data_nascimento" data-testid="data-nascimento-label">Data de Nascimento *</label>
+                            <input 
+                                type="date" 
+                                id="data_nascimento" 
+                                name="data_nascimento" 
+                                data-testid="data-nascimento-input"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" data-testid="email-label">E-mail *</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                data-testid="email-input"
+                                placeholder="seu@email.com"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="celular" data-testid="celular-label">Celular *</label>
+                            <input 
+                                type="tel" 
+                                id="celular" 
+                                name="celular" 
+                                data-testid="celular-input"
+                                placeholder="(00) 00000-0000"
+                                maxlength="15"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="tipo_servico" data-testid="tipo-servico-label">Tipo de Serviço Desejado *</label>
+                            <select 
+                                id="tipo_servico" 
+                                name="tipo_servico" 
+                                data-testid="tipo-servico-select"
+                                required
+                            >
+                                <option value="">Selecione uma opção</option>
+                                <option value="Empréstimo INSS / SIAPE">Empréstimo INSS / SIAPE</option>
+                                <option value="Saque FGTS – dinheiro direto na conta">Saque FGTS – dinheiro direto na conta</option>
+                                <option value="Empréstimo Pessoal Consignado CLT">Empréstimo Pessoal Consignado CLT</option>
+                                <option value="Empréstimo com Garantia Veicular">Empréstimo com Garantia Veicular</option>
+                                <option value="Empréstimo no Cartão de Crédito">Empréstimo no Cartão de Crédito</option>
+                                <option value="Limpa Nome – saia da negativação agora">Limpa Nome – saia da negativação agora</option>
+                                <option value="Empréstimo na Conta de Energia">Empréstimo na Conta de Energia</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" data-testid="submit-btn">
+                        <span class="btn-text">Enviar Simulação</span>
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.167 10h11.666M10 4.167L15.833 10 10 15.833" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2024 HelpBank - Todos os direitos reservados</p>
+        </footer>
+    </div>
+
+    <script>
+        // Máscara para CPF
+        document.getElementById('cpf').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                e.target.value = value;
+            }
+        });
+
+        // Máscara para Celular
+        document.getElementById('celular').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/^(\d{2})(\d)/, '($1) $2');
+                value = value.replace(/(\d{5})(\d)/, '$1-$2');
+                e.target.value = value;
+            }
+        });
+
+        // Validação e envio do formulário
+        document.getElementById('lead-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.querySelector('.submit-btn');
+            const btnText = document.querySelector('.btn-text');
+            const originalText = btnText.textContent;
+            
+            // Desabilita botão e mostra loading
+            submitBtn.disabled = true;
+            btnText.textContent = 'Enviando...';
+            
+            // Coleta os dados do formulário
+            const formData = new FormData(this);
+            
+            // Envia os dados via fetch
+            fetch('/simulacao', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Esconde o formulário
+                    document.getElementById('lead-form').style.display = 'none';
+                    
+                    // Mostra mensagem de sucesso
+                    const successMessage = document.getElementById('success-message');
+                    successMessage.style.display = 'block';
+                    
+                    // Configura botão do WhatsApp
+                    const whatsappBtn = document.getElementById('whatsapp-btn');
+                    const whatsappUrl = `https://wa.me/${data.whatsapp_number}?text=${encodeURIComponent(data.whatsapp_message)}`;
+
+                    
+                    whatsappBtn.addEventListener('click', function() {
+                        window.open(whatsappUrl, '_blank');
+                    });
+                    
+                    // Redireciona automaticamente após 3 segundos
+                    setTimeout(() => {
+                        window.open(whatsappUrl, '_blank');
+                    }, 3000);
+                } else {
+                    alert(data.message);
+                    submitBtn.disabled = false;
+                    btnText.textContent = originalText;
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao enviar dados. Tente novamente.');
+                submitBtn.disabled = false;
+                btnText.textContent = originalText;
+            });
+        });
+
+        // Tratamento de erro para logo
+        document.getElementById('logo-img').addEventListener('error', function() {
+            this.style.display = 'none';
+        });
+    </script>
+    
+</body>
+</html>
