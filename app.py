@@ -2,19 +2,28 @@ from flask import Flask, render_template, request, jsonify
 import sqlite3
 from datetime import datetime
 import re
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'helpbank-secret-key-2026'
 
 # ================= CONFIG =================
-DATABASE = 'leads.db'
-WHATSAPP_EMPRESA = '5581995294741'  # WhatsApp da Help Bank (55 + DDD + número)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE = os.path.join(BASE_DIR, 'leads.db')
+
+# WhatsApp da empresa (55 + DDD + número)
+WHATSAPP_EMPRESA = '5581995294741'
 
 # ================= DATABASE =================
 def get_db_connection():
-    conn = sqlite3.connect(DATABASE, timeout=10)
+    conn = sqlite3.connect(
+        DATABASE,
+        timeout=10,
+        check_same_thread=False
+    )
     conn.row_factory = sqlite3.Row
     return conn
+
 
 def init_db():
     with get_db_connection() as conn:
@@ -39,15 +48,19 @@ def validar_cpf(cpf):
 
     soma = sum(int(cpf[i]) * (10 - i) for i in range(9))
     dig1 = (soma * 10 % 11) % 10
+
     soma = sum(int(cpf[i]) * (11 - i) for i in range(10))
     dig2 = (soma * 10 % 11) % 10
 
     return dig1 == int(cpf[9]) and dig2 == int(cpf[10])
 
 # ================= ROUTES =================
-@app.route('/simulacao', methods=['GET'])
-def simulacao_get():
+
+# 🔹 ROTA PRINCIPAL (Render SEMPRE chama /)
+@app.route('/')
+def index():
     return render_template('simulacao.html')
+
 
 @app.route('/simulacao', methods=['POST'])
 def simulacao_post():
@@ -64,6 +77,7 @@ def simulacao_post():
 
         data_criacao = datetime.now().strftime('%d/%m/%Y %H:%M')
 
+        # Salva no banco
         with get_db_connection() as conn:
             conn.execute("""
                 INSERT INTO leads 
@@ -79,7 +93,7 @@ def simulacao_post():
                 data_criacao
             ))
 
-        # ================= MENSAGEM WHATSAPP (NEGRITO) =================
+        # ================= MENSAGEM WHATSAPP =================
         mensagem = (
             "*Olá! Vim do site Help Bank e gostaria de fazer uma simulação:*\n\n"
             f"*Nome:* {nome}\n"
@@ -88,7 +102,7 @@ def simulacao_post():
             f"*E-mail:* {email}\n"
             f"*Celular:* {celular}\n"
             f"*Serviço:* {tipo_servico}\n\n"
-            "Aguardo retorno!"
+            "*Aguardo retorno!*"
         )
 
         return jsonify(
